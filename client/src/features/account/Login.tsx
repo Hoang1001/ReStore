@@ -6,10 +6,11 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link } from "react-router-dom";
-import agent from "../../app/api/agent";
+import { Link, useNavigate } from "react-router-dom";
 import { FieldValues, useForm } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
+import { useAppDispatch } from "../../app/store/configureStore";
+import { signInUser } from "./accountSlice";
 
 function Copyright(props: any) {
   return (
@@ -25,6 +26,8 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function LogIn() {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -32,11 +35,8 @@ export default function LogIn() {
   } = useForm({ mode: "onTouched" });
 
   async function submitForm(data: FieldValues) {
-    try {
-      await agent.Account.login(data);
-    } catch (error) {
-      console.log(error);
-    }
+    await dispatch(signInUser(data));
+    navigate("/catalog");
   }
 
   return (
