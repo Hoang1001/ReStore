@@ -6,7 +6,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FieldValues, useForm } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
 import { useAppDispatch } from "../../app/store/configureStore";
@@ -27,6 +27,7 @@ const defaultTheme = createTheme();
 
 export default function LogIn() {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useAppDispatch();
   const {
     register,
@@ -36,7 +37,7 @@ export default function LogIn() {
 
   async function submitForm(data: FieldValues) {
     await dispatch(signInUser(data));
-    navigate("/catalog");
+    navigate(location.state?.from || "/catalog");
   }
 
   return (
